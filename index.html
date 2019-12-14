@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Soccer Game Scores</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body {background-color: #92a8d1;}>
+	<div class=" mx-auto text-center">
+	<span style="font-size: X-large;">Futbol Match Results<span>
+	</div>
+
+	<div class="mx-auto text-center">
+	<button id="submit-btn" type="button" class="btn btn-success">Get Soccer Game Scores</button>
+	</div>
+
+	<div class="container mx-auto col-md-4 hide">
+	
+	<div class="p-3 mb-2 bg-warning text-white">
+		<span>Home Team: </span>
+		<span id="home-team"></span>
+	</div>
+
+	<div class="p-3 mb-2 bg-success text-white">
+		<span>Away Team: </span>
+		<span id="away-team"></span>
+	</div>
+
+	<div class="p-3 mb-2 bg-danger text-white">
+		<span>Match Status: </span>
+		<span id="match-status"></span>
+	</div>
+
+	<div class="p-3 mb-2 bg-dark text-white">
+		<span>Match Winner: </span>
+		<span id="match-winner"></span>
+	</div>
+	
+	<div>
+	<span id="home-team"></span>
+	<span id="away-team"></span>
+	<span id="match-status"></span>
+	<span id="match-winner"></span>
+    <div id="div-data">
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+  <script>
+  	$(document).ready(function(){
+		var iconUrl = "";
+   	$('.hide').hide();
+		$("#submit-btn").click(function(){
+			$.ajax({
+  				headers: { 'X-Auth-Token': '455609613bdd4749aa756893582356fa' },
+  				url: "https://api.football-data.org/v2/players/2019/matches?status=FINISHED",
+  				dataType: 'json',
+  				type: 'GET',
+		}).done(function(response) { 
+			$('.hide').show();
+				console.log(response);
+				console.log(response.matches[0]);
+				let homeTeam=response.matches[0].homeTeam.name;
+				let awayTeam=response.matches[0].awayTeam.name;
+				let matchStatus=response.matches[0].status;
+				let matchWinner=response.matches[0].score.winner;
+				let data=`<p><strong>Home Team</strong>: ${homeTeam}</p>
+                            <p><strong>Away Team</strong>: ${awayTeam}</p>
+							<p><strong>Match Status</strong>: ${matchStatus}</p>
+							<p><strong>Match Winner</strong>: ${matchWinner}</p>`;
+
+				$("#home-team").text(homeTeam);
+				$("#away-team").text(awayTeam);
+				$("#match-status").text(matchStatus);
+				$("#match-winner").text(matchWinner);
+				$("#div-data").css("color","green");
+
+				console.log("matchStatus" + matchStatus)
+				console.log("homeTeam:" + homeTeam)
+				console.log("awayTeam:" + awayTeam)
+				console.log("matchWinner" + matchWinner)
+		});
+		});
+	});
+  
+
+</script>
+
+</body>
+</html>
